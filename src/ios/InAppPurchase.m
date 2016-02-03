@@ -227,7 +227,10 @@ unsigned char* unbase64( const char* ascii, int len, int *flen )
 
 @implementation NSArray (JSONSerialize)
 - (NSString *)JSONSerialize {
-    return [self respondsToSelector:@selector(JSONString)] ? [self JSONString] : [self JSONRepresentation];
+    NSError *writeError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:&writeError];
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    return jsonString;
 }
 @end
 
